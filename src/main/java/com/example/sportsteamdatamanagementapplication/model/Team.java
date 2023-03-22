@@ -14,7 +14,7 @@ public class Team {
     @Column(name = "teamName")
     private String nameMembers; //Название команды
     private SportType sportType; //Вид спорта
-    private double dateOfFoundation; //Дата основания
+    private Double dateOfFoundation; //Дата основания
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamMembers> teamMembers;
@@ -22,7 +22,7 @@ public class Team {
     public Team() {
     }
 
-    public Team(String nameMembers, SportType sportType, double dateOfFoundation) {
+    public Team(String nameMembers, SportType sportType, Double dateOfFoundation) {
         this.nameMembers = validationCheckNameMembers(nameMembers);
         this.sportType = sportType;
         this.dateOfFoundation = dateOfFoundation;
@@ -60,7 +60,7 @@ public class Team {
         this.sportType = sportType;
     }
 
-    public double getDateOfFoundation() {
+    public Double getDateOfFoundation() {
         return dateOfFoundation;
     }
 
