@@ -1,10 +1,9 @@
 package com.example.sportsteamdatamanagementapplication.utils;
-
 import com.example.sportsteamdatamanagementapplication.model.Team;
 import com.example.sportsteamdatamanagementapplication.model.TeamMembers;
-
-import java.lang.module.Configuration;
-
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 public class HibernateSessionFactoryUtil {
     private static SessionFactory sessionFactory;
 

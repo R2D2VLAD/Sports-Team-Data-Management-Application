@@ -1,6 +1,7 @@
 package com.example.sportsteamdatamanagementapplication.model;
 
-import jakarta.persistence.*;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Team_members")
@@ -17,14 +18,14 @@ public class TeamMembers {
     private String name; //Имя
     @Column(name = "patronymic")
     private String patronymic; //Отчество
-    private double dateOfBirth; //Дата рождения
+    private Double dateOfBirth; //Дата рождения
     @Column(name = "positionteam")
     private PositionOfTeam positionOfTeam; //Позиция в команде
 
     public TeamMembers() {
 
     }
-    public TeamMembers(String surname, String name, String patronymic, double dateOfBirth, PositionOfTeam positionOfTeam) {
+    public TeamMembers(String surname, String name, String patronymic, Double dateOfBirth, PositionOfTeam positionOfTeam) {
         this.surname = validationCheckSurname(surname);
         this.name = validationCheckName(name);
         this.patronymic = validationCheckPatronymic(patronymic);
@@ -85,7 +86,7 @@ public class TeamMembers {
         this.patronymic = patronymic;
     }
 
-    public double getDateOfBirth() {
+    public Double getDateOfBirth() {
         return dateOfBirth;
     }
 
