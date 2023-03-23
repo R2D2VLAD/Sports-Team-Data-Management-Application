@@ -1,0 +1,43 @@
+  - changeSet:
+    id: "01"
+    author: "VLAD"
+    changes:
+      - insert:
+          tableName: Team
+          columns:
+            - column:
+                name: id
+                value: "NEW"
+            - column:
+                name: teamName
+                value: "SPARTAK"
+            - column:
+                name: sportType
+                value: "FOOTBALL"
+            - column:
+                name: yearsOfFoundation
+                value: "1950"
+      - insert:
+          tableName: Team_members
+          columns:
+            - column:
+                name: id
+                value: "NEW"
+            - column:
+                name: id_team
+                value: "NEW"
+            - column:
+                name: lastname
+                value: "Житарь"
+            - column:
+                name: firstname
+                value: "Владислав"
+            - column:
+                name: patronymic
+                value: "Михайлович"
+            - column:
+                name: yearsofbirth
+                value: "2003"
+            - column:
+                name: positionteam
+                value: "STRIKER"

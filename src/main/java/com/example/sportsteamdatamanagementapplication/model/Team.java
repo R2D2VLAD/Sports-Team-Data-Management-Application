@@ -1,20 +1,26 @@
 package com.example.sportsteamdatamanagementapplication.model;
 
 
+import com.example.sportsteamdatamanagementapplication.exceptions.NoDataAvailable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "Team")
+@EqualsAndHashCode
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; //Идентификатор
+    @JsonIgnore
+    private int id;
     @Column(name = "teamName")
-    private String nameMembers; //Название команды
-    private SportType sportType; //Вид спорта
-    private Double dateOfFoundation; //Дата основания
+    private String nameMembers;
+    private SportType sportType;
+    private Integer yearsOfFoundation;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamMembers> teamMembers;
@@ -22,10 +28,10 @@ public class Team {
     public Team() {
     }
 
-    public Team(String nameMembers, SportType sportType, Double dateOfFoundation) {
+    public Team(String nameMembers, SportType sportType, Integer dateOfFoundation) {
         this.nameMembers = validationCheckNameMembers(nameMembers);
         this.sportType = sportType;
-        this.dateOfFoundation = dateOfFoundation;
+        this.yearsOfFoundation = dateOfFoundation;
         teamMembers = new ArrayList<>();
     }
 
@@ -33,15 +39,7 @@ public class Team {
         if (nameMembers != null && !nameMembers.isBlank() && !nameMembers.isEmpty()) {
             return nameMembers;
         }
-        throw new IllegalArgumentException("Поле name заполнено некорректно!");
-    }
-    public void addTeamMembers(TeamMembers teamMembers1) {
-        teamMembers1.setTeam(this);
-        teamMembers.add(teamMembers1);
-    }
-
-    public void removeTeamMembers(TeamMembers teamMembers1) {
-        teamMembers.remove(teamMembers1);
+        throw new NoDataAvailable("Поле name заполнено некорректно!");
     }
 
     public String getNameMembers() {
@@ -60,12 +58,12 @@ public class Team {
         this.sportType = sportType;
     }
 
-    public Double getDateOfFoundation() {
-        return dateOfFoundation;
+    public Integer getYearsOfFoundation() {
+        return yearsOfFoundation;
     }
 
-    public void setDateOfFoundation(double dateOfFoundation) {
-        this.dateOfFoundation = dateOfFoundation;
+    public void setYearsOfFoundation(int dateOfFoundation) {
+        this.yearsOfFoundation = dateOfFoundation;
     }
 
     public int getId() {
@@ -90,7 +88,8 @@ public class Team {
                 "id=" + id +
                 ", nameMembers='" + nameMembers + '\'' +
                 ", sportType=" + sportType +
-                ", dateOfFoundation=" + dateOfFoundation +
+                ", yearsOfFoundation=" + yearsOfFoundation +
+                ", teamMembers=" + teamMembers +
                 '}';
     }
 }

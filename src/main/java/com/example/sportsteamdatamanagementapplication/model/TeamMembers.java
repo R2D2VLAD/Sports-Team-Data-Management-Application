@@ -1,30 +1,36 @@
 package com.example.sportsteamdatamanagementapplication.model;
 
 
-import javax.persistence.*;
+import com.example.sportsteamdatamanagementapplication.exceptions.NoDataAvailable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
 
+import javax.persistence.*;
 @Entity
 @Table(name = "Team_members")
+@EqualsAndHashCode
 public class TeamMembers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; //Идентификатор игрока
+    @JsonIgnore
+    private int id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_team")
-    private Team team;
+    @JsonIgnore
+    private Team teamId;
     @Column(name = "lastname")
-    private String surname; //Фамилия
+    private String surname;
     @Column(name = "firstname")
-    private String name; //Имя
+    private String name;
     @Column(name = "patronymic")
-    private String patronymic; //Отчество
-    private Double dateOfBirth; //Дата рождения
+    private String patronymic;
+    private Double dateOfBirth;
     @Column(name = "positionteam")
-    private PositionOfTeam positionOfTeam; //Позиция в команде
+    private PositionOfTeam positionOfTeam;
 
     public TeamMembers() {
-
     }
+
     public TeamMembers(String surname, String name, String patronymic, Double dateOfBirth, PositionOfTeam positionOfTeam) {
         this.surname = validationCheckSurname(surname);
         this.name = validationCheckName(name);
@@ -37,21 +43,21 @@ public class TeamMembers {
         if (surname != null && !surname.isBlank() && !surname.isEmpty()) {
             return surname;
         }
-        throw new IllegalArgumentException("Поле surname заполнено некорректно!");
+        throw new NoDataAvailable("Поле surname заполнено некорректно!");
     }
 
     private String validationCheckName(String name) {
         if (name != null && !name.isBlank() && !name.isEmpty()) {
             return name;
         }
-        throw new IllegalArgumentException("Поле name заполнено некорректно!");
+        throw new NoDataAvailable("Поле name заполнено некорректно!");
     }
 
     private String validationCheckPatronymic(String patronymic) {
         if (patronymic != null && !patronymic.isBlank() && !patronymic.isEmpty()) {
             return patronymic;
         }
-        throw new IllegalArgumentException("Поле patronymic заполнено некорректно!");
+        throw new NoDataAvailable("Поле patronymic заполнено некорректно!");
     }
 
     public int getId() {
@@ -102,19 +108,19 @@ public class TeamMembers {
         this.positionOfTeam = positionOfTeam;
     }
 
-    public Team getTeam() {
-        return team;
+    public Team getTeamId() {
+        return teamId;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setTeamId(Team teamId) {
+        this.teamId = teamId;
     }
 
     @Override
     public String toString() {
         return "TeamMembers{" +
                 "id=" + id +
-                ", team=" + team +
+                ", teamId=" + teamId +
                 ", surname='" + surname + '\'' +
                 ", name='" + name + '\'' +
                 ", patronymic='" + patronymic + '\'' +
