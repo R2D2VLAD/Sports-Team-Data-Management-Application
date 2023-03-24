@@ -10,19 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Team")
+@Table(name = "Sports_teams", schema = "public", catalog = "postgres")
 @EqualsAndHashCode
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     @JsonIgnore
     private int id;
-    @Column(name = "teamName")
+    @Basic
+    @Column(name = "teamName", nullable = false, length = 50)
     private String nameMembers;
+    @Basic
+    @Column(name = "sportType", nullable = false, length = 50)
     private SportType sportType;
+    @Basic
+    @Column(name = "yearsOfFoundation", nullable = false)
     private Integer yearsOfFoundation;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "teamId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamMembers> teamMembers;
 
     public Team() {

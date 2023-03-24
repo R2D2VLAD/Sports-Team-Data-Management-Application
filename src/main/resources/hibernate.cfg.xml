@@ -11,5 +11,7 @@
     <property name="hibernate.connection.password">1234</property>
     <property name="dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>
     <property name="show_sql">true</property>
+      <mapping class="com.example.sportsteamdatamanagementapplication.model.Team"/>
+    <mapping class="com.example.sportsteamdatamanagementapplication.model.TeamMembers"/>
   </session-factory>
 </hibernate-configuration>

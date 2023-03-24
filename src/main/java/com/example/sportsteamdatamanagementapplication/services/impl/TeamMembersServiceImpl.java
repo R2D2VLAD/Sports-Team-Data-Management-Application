@@ -1,11 +1,9 @@
 package com.example.sportsteamdatamanagementapplication.services.impl;
 
 import com.example.sportsteamdatamanagementapplication.exceptions.NoTeamMembers;
+import com.example.sportsteamdatamanagementapplication.model.Team;
 import com.example.sportsteamdatamanagementapplication.model.TeamMembers;
 import com.example.sportsteamdatamanagementapplication.services.TeamMembersService;
-import com.example.sportsteamdatamanagementapplication.utils.HibernateSessionFactoryUtil;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -14,18 +12,20 @@ import java.util.Map;
 
 @Service
 public class TeamMembersServiceImpl implements TeamMembersService {
-
     private static final Map<Integer, TeamMembers> teamMembersMap = new HashMap<>();
     public static int id = 0;
 
     @Override
-    public long addTeamMembers(TeamMembers teamMembers) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        teamMembersMap.put(id, teamMembers);
-        session.save(teamMembers);
-        tx1.commit();
-        session.close();
+    public long addTeamMembers(TeamMembers teamMembers, int idTeam) {
+        for (Map.Entry<Integer, Team> entry : TeamServiceImpl.getTeamMap().entrySet()) {
+            Team team = entry.getValue();
+            if (TeamServiceImpl.getTeamMap().containsKey(idTeam)) {
+                team.getTeamMembers().add(teamMembers);
+                teamMembersMap.put(id, teamMembers);
+            } else {
+                throw new NoTeamMembers("Команды по такому id нет!");
+            }
+        }
         return id++;
     }
 
@@ -54,6 +54,11 @@ public class TeamMembersServiceImpl implements TeamMembersService {
 
     public static Map<Integer, TeamMembers> getTeamMembersMap() {
         return teamMembersMap;
+    }
+
+    public static void addTeamMembers1(TeamMembers teamMembers) {
+        teamMembersMap.put(id, teamMembers);
+        id++;
     }
 }
 

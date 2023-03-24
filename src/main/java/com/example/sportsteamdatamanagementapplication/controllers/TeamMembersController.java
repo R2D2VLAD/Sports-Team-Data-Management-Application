@@ -22,7 +22,7 @@ public class TeamMembersController {
 
     private final TeamMembersService teamMembersService;
 
-    @PostMapping
+    @PostMapping("/{id}")
     @Operation(
             summary = "Endpoint для добаления участников спортивных команд")
     @ApiResponses(value = {
@@ -46,9 +46,9 @@ public class TeamMembersController {
                     description = "Во время выполнения запроса произошла ошибка на сервере!",
                     content = {
                             @Content(mediaType = "application/json")}),})
-    public ResponseEntity<Long> addTeamMembers(@RequestBody TeamMembers teamMembers) {
-        long id = teamMembersService.addTeamMembers(teamMembers);
-        return ResponseEntity.ok(id);
+    public ResponseEntity<Long> addTeamMembers(@RequestBody TeamMembers teamMembers, @PathVariable int id) {
+        long id1 = teamMembersService.addTeamMembers(teamMembers, id);
+        return ResponseEntity.ok(id1);
     }
 
     @PutMapping("/{id}")

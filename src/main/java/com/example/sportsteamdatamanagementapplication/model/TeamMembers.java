@@ -6,36 +6,44 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+
 @Entity
-@Table(name = "Team_members")
+@Table(name = "Sports_teams_members", schema = "public", catalog = "postgres")
 @EqualsAndHashCode
 public class TeamMembers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     @JsonIgnore
     private int id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_team")
+    @JoinColumn(name = "id_team", nullable = false)
     @JsonIgnore
     private Team teamId;
-    @Column(name = "lastname")
+    @Basic
+    @Column(name = "lastname", nullable = false, length = 50)
     private String surname;
-    @Column(name = "firstname")
+    @Basic
+    @Column(name = "firstname", nullable = false, length = 50)
     private String name;
-    @Column(name = "patronymic")
+    @Basic
+    @Column(name = "patronymic", nullable = false, length = 50)
     private String patronymic;
-    private Double dateOfBirth;
-    @Column(name = "positionteam")
+    @Basic
+    @Column(name = "yearsOfBirth", nullable = false)
+    private Integer yearsOfBirth;
+    @Basic
+    @Column(name = "positionTeam", nullable = false, length = 50)
     private PositionOfTeam positionOfTeam;
 
     public TeamMembers() {
     }
 
-    public TeamMembers(String surname, String name, String patronymic, Double dateOfBirth, PositionOfTeam positionOfTeam) {
+    public TeamMembers(String surname, String name, String patronymic, Integer yearsOfBirth, PositionOfTeam positionOfTeam) {
         this.surname = validationCheckSurname(surname);
         this.name = validationCheckName(name);
         this.patronymic = validationCheckPatronymic(patronymic);
-        this.dateOfBirth = dateOfBirth;
+        this.yearsOfBirth = yearsOfBirth;
         this.positionOfTeam = positionOfTeam;
     }
 
@@ -92,12 +100,12 @@ public class TeamMembers {
         this.patronymic = patronymic;
     }
 
-    public Double getDateOfBirth() {
-        return dateOfBirth;
+    public Integer getYearsOfBirth() {
+        return yearsOfBirth;
     }
 
-    public void setDateOfBirth(double dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setYearsOfBirth(Integer dateOfBirth) {
+        this.yearsOfBirth = dateOfBirth;
     }
 
     public PositionOfTeam getPositionOfTeam() {
@@ -124,7 +132,7 @@ public class TeamMembers {
                 ", surname='" + surname + '\'' +
                 ", name='" + name + '\'' +
                 ", patronymic='" + patronymic + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
+                ", dateOfBirth=" + yearsOfBirth +
                 ", positionOfTeam=" + positionOfTeam +
                 '}';
     }

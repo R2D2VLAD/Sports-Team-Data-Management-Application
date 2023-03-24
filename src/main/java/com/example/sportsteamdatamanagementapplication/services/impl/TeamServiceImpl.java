@@ -30,7 +30,7 @@ public class TeamServiceImpl implements TeamService {
         teamMap.put(id, team);
         for (TeamMembers teamMembers : team.getTeamMembers()) {
             if (!TeamMembersServiceImpl.getTeamMembersMap().containsValue(teamMembers)) {
-                teamMembersService.addTeamMembers(teamMembers);
+                TeamMembersServiceImpl.addTeamMembers1(teamMembers);
             }
         }
         return id++;
@@ -39,27 +39,27 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Team editTeam(int id, Team team) {
         if (teamMap.containsKey(id)) {
-                Team team1 = teamMap.get(id);
-                for (TeamMembers teamMembers : team1.getTeamMembers()){
-                    if (TeamMembersServiceImpl.getTeamMembersMap().containsValue(teamMembers)) {
-                        teamMembersService.deleteTeamMembers(id);
-                    }
+            Team team1 = teamMap.get(id);
+            for (TeamMembers teamMembers : team1.getTeamMembers()) {
+                if (TeamMembersServiceImpl.getTeamMembersMap().containsValue(teamMembers)) {
+                    teamMembersService.deleteTeamMembers(id);
                 }
-                teamMap.put(id, team);
+            }
+            teamMap.put(id, team);
             for (TeamMembers teamMembers : team.getTeamMembers()) {
                 if (!TeamMembersServiceImpl.getTeamMembersMap().containsValue(teamMembers)) {
-                    teamMembersService.addTeamMembers(teamMembers);
+                    TeamMembersServiceImpl.addTeamMembers1(teamMembers);
                 }
             }
         }
-            return team;
+        return team;
     }
 
     @Override
     public boolean deleteTeam(int id) {
         if (teamMap.containsKey(id)) {
             Team team1 = teamMap.get(id);
-            for (TeamMembers teamMembers : team1.getTeamMembers()){
+            for (TeamMembers teamMembers : team1.getTeamMembers()) {
                 if (TeamMembersServiceImpl.getTeamMembersMap().containsValue(teamMembers)) {
                     teamMembersService.deleteTeamMembers(id);
                 }
@@ -99,6 +99,10 @@ public class TeamServiceImpl implements TeamService {
             }
         }
         return teamMembersList;
+    }
+
+    public static Map<Integer, Team> getTeamMap() {
+        return teamMap;
     }
 }
 
