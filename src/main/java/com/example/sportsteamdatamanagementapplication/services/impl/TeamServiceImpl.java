@@ -7,9 +7,6 @@ import com.example.sportsteamdatamanagementapplication.model.Team;
 import com.example.sportsteamdatamanagementapplication.model.TeamMembers;
 import com.example.sportsteamdatamanagementapplication.services.TeamMembersService;
 import com.example.sportsteamdatamanagementapplication.services.TeamService;
-import com.example.sportsteamdatamanagementapplication.utils.HibernateSessionFactoryUtil;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,17 +27,12 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public long addTeam(Team team) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
         teamMap.put(id, team);
         for (TeamMembers teamMembers : team.getTeamMembers()) {
             if (!TeamMembersServiceImpl.getTeamMembersMap().containsValue(teamMembers)) {
                 TeamMembersServiceImpl.addTeamMembers1(teamMembers);
             }
         }
-        session.save(team);
-        tx1.commit();
-        session.close();
         return id++;
     }
 
@@ -100,7 +92,7 @@ public class TeamServiceImpl implements TeamService {
         Team team1 = teamMap.get(id);
         for (TeamMembers teamMembers : team1.getTeamMembers()) {
             if (teamMembers.getPositionOfTeam().equals(positionOfTeam)
-                    && (team1.getId() == id)) {
+                    && (teamMap.containsKey(id))) {
                 teamMembersList.add(teamMembers);
             } else {
                 throw new NoTeamMembers("No members!");
