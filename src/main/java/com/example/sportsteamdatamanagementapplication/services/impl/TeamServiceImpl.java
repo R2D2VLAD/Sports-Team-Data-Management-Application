@@ -5,7 +5,6 @@ import com.example.sportsteamdatamanagementapplication.model.PositionOfTeam;
 import com.example.sportsteamdatamanagementapplication.model.SportType;
 import com.example.sportsteamdatamanagementapplication.model.Team;
 import com.example.sportsteamdatamanagementapplication.model.TeamMembers;
-import com.example.sportsteamdatamanagementapplication.services.TeamMembersService;
 import com.example.sportsteamdatamanagementapplication.services.TeamService;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +15,8 @@ import java.util.Map;
 
 @Service
 public class TeamServiceImpl implements TeamService {
-
-    private final TeamMembersService teamMembersService;
     private static final Map<Integer, Team> teamMap = new HashMap<>();
     public static int id = 0;
-
-    public TeamServiceImpl(TeamMembersService teamMembersService) {
-        this.teamMembersService = teamMembersService;
-    }
 
     @Override
     public long addTeam(Team team) {
@@ -42,7 +35,7 @@ public class TeamServiceImpl implements TeamService {
             Team team1 = teamMap.get(id);
             for (TeamMembers teamMembers : team1.getTeamMembers()) {
                 if (TeamMembersServiceImpl.getTeamMembersMap().containsValue(teamMembers)) {
-                    teamMembersService.deleteTeamMembers(id);
+                    TeamMembersServiceImpl.deleteTeamMembers1(id);
                 }
             }
             teamMap.put(id, team);
@@ -61,7 +54,7 @@ public class TeamServiceImpl implements TeamService {
             Team team1 = teamMap.get(id);
             for (TeamMembers teamMembers : team1.getTeamMembers()) {
                 if (TeamMembersServiceImpl.getTeamMembersMap().containsValue(teamMembers)) {
-                    teamMembersService.deleteTeamMembers(id);
+                    TeamMembersServiceImpl.deleteTeamMembers1(id);
                 }
             }
             teamMap.remove(id);

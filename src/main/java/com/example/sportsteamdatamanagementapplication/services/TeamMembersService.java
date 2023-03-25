@@ -7,9 +7,11 @@ import java.util.Collection;
 public interface TeamMembersService {
     long addTeamMembers(TeamMembers teamMembers, int idTeam);
 
-    TeamMembers editTeamMembers(int id, TeamMembers teamMembers);
+    String transferParticipant(int idTeam, int idMembers, int idTeam2, TeamMembers teamMembers);
 
-    boolean deleteTeamMembers(int id);
+    TeamMembers editTeamMembers(int idTeam, int id, TeamMembers teamMembers);
+
+    boolean deleteTeamMembers(int id, int idTeam);
 
     Collection<TeamMembers> getTeamMembers();
 }
