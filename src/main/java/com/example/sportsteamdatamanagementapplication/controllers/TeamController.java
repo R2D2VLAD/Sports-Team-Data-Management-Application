@@ -6,15 +6,12 @@ import com.example.sportsteamdatamanagementapplication.model.SportType;
 import com.example.sportsteamdatamanagementapplication.model.Team;
 import com.example.sportsteamdatamanagementapplication.model.TeamMembers;
 import com.example.sportsteamdatamanagementapplication.services.TeamService;
-import com.example.sportsteamdatamanagementapplication.utils.HibernateSessionFactoryUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
