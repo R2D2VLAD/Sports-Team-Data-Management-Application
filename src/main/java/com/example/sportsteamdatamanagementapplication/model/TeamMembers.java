@@ -1,34 +1,50 @@
 package com.example.sportsteamdatamanagementapplication.model;
 
+
+import com.example.sportsteamdatamanagementapplication.exceptions.NoDataAvailable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+
 
 @Entity
-@Table(name = "Team_members")
+@Table(name = "sports_teams_members")
+@EqualsAndHashCode
 public class TeamMembers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; //Идентификатор игрока
+    @Column(name = "id", nullable = false)
+    @JsonIgnore
+    private int id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_team")
-    private Team team;
-    @Column(name = "lastname")
-    private String surname; //Фамилия
-    @Column(name = "firstname")
-    private String name; //Имя
-    @Column(name = "patronymic")
-    private String patronymic; //Отчество
-    private double dateOfBirth; //Дата рождения
-    @Column(name = "positionteam")
-    private PositionOfTeam positionOfTeam; //Позиция в команде
+    @JoinColumn(name = "id_team", nullable = false)
+    @JsonIgnore
+    private Team teamId;
+    @Basic
+    @Column(name = "lastname", nullable = false, length = 50)
+    private String surname;
+    @Basic
+    @Column(name = "firstname", nullable = false, length = 50)
+    private String name;
+    @Basic
+    @Column(name = "patronymic", nullable = false, length = 50)
+    private String patronymic;
+    @Basic
+    @Column(name = "years_of_birth", nullable = false)
+    private Integer yearsOfBirth;
+    @Basic
+    @Column(name = "position_team", nullable = false, length = 50)
+    @Enumerated(EnumType.STRING)
+    private PositionOfTeam positionOfTeam;
 
     public TeamMembers() {
-
     }
-    public TeamMembers(String surname, String name, String patronymic, double dateOfBirth, PositionOfTeam positionOfTeam) {
+
+    public TeamMembers(String surname, String name, String patronymic, Integer yearsOfBirth, PositionOfTeam positionOfTeam) {
         this.surname = validationCheckSurname(surname);
         this.name = validationCheckName(name);
         this.patronymic = validationCheckPatronymic(patronymic);
-        this.dateOfBirth = dateOfBirth;
+        this.yearsOfBirth = yearsOfBirth;
         this.positionOfTeam = positionOfTeam;
     }
 
@@ -36,21 +52,21 @@ public class TeamMembers {
         if (surname != null && !surname.isBlank() && !surname.isEmpty()) {
             return surname;
         }
-        throw new IllegalArgumentException("Поле surname заполнено некорректно!");
+        throw new NoDataAvailable("Поле surname заполнено некорректно!");
     }
 
     private String validationCheckName(String name) {
         if (name != null && !name.isBlank() && !name.isEmpty()) {
             return name;
         }
-        throw new IllegalArgumentException("Поле name заполнено некорректно!");
+        throw new NoDataAvailable("Поле name заполнено некорректно!");
     }
 
     private String validationCheckPatronymic(String patronymic) {
         if (patronymic != null && !patronymic.isBlank() && !patronymic.isEmpty()) {
             return patronymic;
         }
-        throw new IllegalArgumentException("Поле patronymic заполнено некорректно!");
+        throw new NoDataAvailable("Поле patronymic заполнено некорректно!");
     }
 
     public int getId() {
@@ -85,12 +101,12 @@ public class TeamMembers {
         this.patronymic = patronymic;
     }
 
-    public double getDateOfBirth() {
-        return dateOfBirth;
+    public Integer getYearsOfBirth() {
+        return yearsOfBirth;
     }
 
-    public void setDateOfBirth(double dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setYearsOfBirth(Integer dateOfBirth) {
+        this.yearsOfBirth = dateOfBirth;
     }
 
     public PositionOfTeam getPositionOfTeam() {
@@ -101,23 +117,23 @@ public class TeamMembers {
         this.positionOfTeam = positionOfTeam;
     }
 
-    public Team getTeam() {
-        return team;
+    public Team getTeamId() {
+        return teamId;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setTeamId(Team teamId) {
+        this.teamId = teamId;
     }
 
     @Override
     public String toString() {
         return "TeamMembers{" +
                 "id=" + id +
-                ", team=" + team +
+                ", teamId=" + teamId +
                 ", surname='" + surname + '\'' +
                 ", name='" + name + '\'' +
                 ", patronymic='" + patronymic + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
+                ", dateOfBirth=" + yearsOfBirth +
                 ", positionOfTeam=" + positionOfTeam +
                 '}';
     }

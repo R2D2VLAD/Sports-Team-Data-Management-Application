@@ -1,31 +1,45 @@
 package com.example.sportsteamdatamanagementapplication.model;
 
+
+import com.example.sportsteamdatamanagementapplication.exceptions.NoDataAvailable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Team")
+@Table(name = "sports_teams")
+@EqualsAndHashCode
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; //Идентификатор
-    @Column(name = "teamName")
-    private String nameMembers; //Название команды
-    private SportType sportType; //Вид спорта
-    private double dateOfFoundation; //Дата основания
+    @Column(name = "id", nullable = false)
+    @JsonIgnore
+    private int id;
+    @Basic
+    @Column(name = "team_name", nullable = false, length = 50)
+    private String nameMembers;
+    @Basic
+    @Column(name = "sport_type", nullable = false, length = 50)
+    @Enumerated(EnumType.STRING)
+    private SportType sportType;
+    @Basic
+    @Column(name = "years_of_foundation", nullable = false)
+    private Integer yearsOfFoundation;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "teamId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamMembers> teamMembers;
 
     public Team() {
     }
 
-    public Team(String nameMembers, SportType sportType, double dateOfFoundation) {
+    public Team(String nameMembers, SportType sportType, Integer dateOfFoundation) {
         this.nameMembers = validationCheckNameMembers(nameMembers);
         this.sportType = sportType;
-        this.dateOfFoundation = dateOfFoundation;
+        this.yearsOfFoundation = dateOfFoundation;
         teamMembers = new ArrayList<>();
     }
 
@@ -33,15 +47,7 @@ public class Team {
         if (nameMembers != null && !nameMembers.isBlank() && !nameMembers.isEmpty()) {
             return nameMembers;
         }
-        throw new IllegalArgumentException("Поле name заполнено некорректно!");
-    }
-    public void addTeamMembers(TeamMembers teamMembers1) {
-        teamMembers1.setTeam(this);
-        teamMembers.add(teamMembers1);
-    }
-
-    public void removeTeamMembers(TeamMembers teamMembers1) {
-        teamMembers.remove(teamMembers1);
+        throw new NoDataAvailable("Поле name заполнено некорректно!");
     }
 
     public String getNameMembers() {
@@ -60,12 +66,12 @@ public class Team {
         this.sportType = sportType;
     }
 
-    public double getDateOfFoundation() {
-        return dateOfFoundation;
+    public Integer getYearsOfFoundation() {
+        return yearsOfFoundation;
     }
 
-    public void setDateOfFoundation(double dateOfFoundation) {
-        this.dateOfFoundation = dateOfFoundation;
+    public void setYearsOfFoundation(int dateOfFoundation) {
+        this.yearsOfFoundation = dateOfFoundation;
     }
 
     public int getId() {
@@ -90,7 +96,8 @@ public class Team {
                 "id=" + id +
                 ", nameMembers='" + nameMembers + '\'' +
                 ", sportType=" + sportType +
-                ", dateOfFoundation=" + dateOfFoundation +
+                ", yearsOfFoundation=" + yearsOfFoundation +
+                ", teamMembers=" + teamMembers +
                 '}';
     }
 }
