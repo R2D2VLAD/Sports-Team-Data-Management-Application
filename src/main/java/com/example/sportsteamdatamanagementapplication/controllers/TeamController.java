@@ -25,58 +25,24 @@ public class TeamController {
 
     private final TeamService teamService;
     @PostMapping
-    @Operation(
-            summary = "Endpoint для добаления спортивных команд")
+    @Operation(summary = "Endpoint для добаления спортивных команд")
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Всё хорошо, запрос выполнился!",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Есть ошибка в параметрах запроса",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "URL неверный или такого действия в приложении нет!",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Во время выполнения запроса произошла ошибка на сервере!",
-                    content = {
-                            @Content(mediaType = "application/json")}),})
+            @ApiResponse(responseCode = "200", description = "Всё хорошо, запрос выполнился!", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Есть ошибка в параметрах запроса", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "URL неверный или такого действия в приложении нет!", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "500", description = "Во время выполнения запроса произошла ошибка на сервере!", content = {@Content(mediaType = "application/json")}),})
     public ResponseEntity<Long> addTeam(@RequestBody Team team) {
         long id = teamService.addTeam(team);
         return ResponseEntity.ok(id);
     }
 
     @PutMapping("/{id}")
-    @Operation(
-            summary = "Endpoint для измениния данных спортивных команд по id")
+    @Operation(summary = "Endpoint для измениния данных спортивных команд по id")
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Всё хорошо, запрос выполнился!",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Есть ошибка в параметрах запроса",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "URL неверный или такого действия в приложении нет!",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Во время выполнения запроса произошла ошибка на сервере!",
-                    content = {
-                            @Content(mediaType = "application/json")}),})
+            @ApiResponse(responseCode = "200", description = "Всё хорошо, запрос выполнился!", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Есть ошибка в параметрах запроса", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "URL неверный или такого действия в приложении нет!", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "500", description = "Во время выполнения запроса произошла ошибка на сервере!", content = {@Content(mediaType = "application/json")}),})
     public ResponseEntity<Team> editTeam(@PathVariable int id, @RequestBody Team team) {
         Team team1 = teamService.editTeam(id, team);
         if (team1 == null) {
@@ -86,29 +52,12 @@ public class TeamController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(
-            summary = "Endpoint для удаления спортивных команд по id")
+    @Operation(summary = "Endpoint для удаления спортивных команд по id")
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Всё хорошо, запрос выполнился!",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Есть ошибка в параметрах запроса",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "URL неверный или такого действия в приложении нет!",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Во время выполнения запроса произошла ошибка на сервере!",
-                    content = {
-                            @Content(mediaType = "application/json")}),})
+            @ApiResponse(responseCode = "200", description = "Всё хорошо, запрос выполнился!", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Есть ошибка в параметрах запроса", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "URL неверный или такого действия в приложении нет!", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "500", description = "Во время выполнения запроса произошла ошибка на сервере!", content = {@Content(mediaType = "application/json")}),})
     public ResponseEntity<Void> deleteTeam(@PathVariable int id) {
         if (teamService.deleteTeam(id)) {
             return ResponseEntity.ok().build();
@@ -117,29 +66,12 @@ public class TeamController {
     }
 
     @GetMapping
-    @Operation(
-            summary = "Endpoint получения всех спортивных команд по определенным настройкам")
+    @Operation(summary = "Endpoint получения всех спортивных команд по определенным настройкам")
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Всё хорошо, запрос выполнился!",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Есть ошибка в параметрах запроса",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "URL неверный или такого действия в приложении нет!",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Во время выполнения запроса произошла ошибка на сервере!",
-                    content = {
-                            @Content(mediaType = "application/json")}),})
+            @ApiResponse(responseCode = "200", description = "Всё хорошо, запрос выполнился!", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Есть ошибка в параметрах запроса", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "URL неверный или такого действия в приложении нет!", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "500", description = "Во время выполнения запроса произошла ошибка на сервере!", content = {@Content(mediaType = "application/json")}),})
     public ResponseEntity<List<Team>> getAllTeam(@RequestParam(required = false, name = "Вид спорта")SportType sportType,
                                            @RequestParam(required = false, name = "Год с которой начнется поиск всех команд(гггг)") Integer dataMin,
                                            @RequestParam(required = false, name = "Год до которой будет произведен поиск всех команд(гггг)") Integer dataMax) {
@@ -150,29 +82,12 @@ public class TeamController {
         return ResponseEntity.ok(team);
     }
     @GetMapping("/{id}")
-    @Operation(
-            summary = "Endpoint для получения участников конкретных спортивных команд по определенным настройкам")
+    @Operation(summary = "Endpoint для получения участников конкретных спортивных команд по определенным настройкам")
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Всё хорошо, запрос выполнился!",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Есть ошибка в параметрах запроса",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "URL неверный или такого действия в приложении нет!",
-                    content = {
-                            @Content(mediaType = "application/json")}),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Во время выполнения запроса произошла ошибка на сервере!",
-                    content = {
-                            @Content(mediaType = "application/json")}),})
+            @ApiResponse(responseCode = "200", description = "Всё хорошо, запрос выполнился!", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Есть ошибка в параметрах запроса", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "URL неверный или такого действия в приложении нет!", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "500", description = "Во время выполнения запроса произошла ошибка на сервере!", content = {@Content(mediaType = "application/json")}),})
     public ResponseEntity<List<TeamMembers>> getAllTeamMembersTeam(@RequestParam(required = false, name = "Позиция в команде") PositionOfTeam positionOfTeam,
                                                                    @PathVariable int id) {
         List<TeamMembers> teamMembers = teamService.getAllTeamMembersTeam(positionOfTeam, id);

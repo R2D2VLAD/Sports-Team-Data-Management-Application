@@ -3,14 +3,15 @@ package com.example.sportsteamdatamanagementapplication.model;
 
 import com.example.sportsteamdatamanagementapplication.exceptions.NoDataAvailable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Sports_teams", schema = "public", catalog = "postgres")
+@Table(name = "sports_teams")
 @EqualsAndHashCode
 public class Team {
     @Id
@@ -19,13 +20,14 @@ public class Team {
     @JsonIgnore
     private int id;
     @Basic
-    @Column(name = "teamName", nullable = false, length = 50)
+    @Column(name = "team_name", nullable = false, length = 50)
     private String nameMembers;
     @Basic
-    @Column(name = "sportType", nullable = false, length = 50)
+    @Column(name = "sport_type", nullable = false, length = 50)
+    @Enumerated(EnumType.STRING)
     private SportType sportType;
     @Basic
-    @Column(name = "yearsOfFoundation", nullable = false)
+    @Column(name = "years_of_foundation", nullable = false)
     private Integer yearsOfFoundation;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "teamId", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -5,97 +5,74 @@ import com.example.sportsteamdatamanagementapplication.model.PositionOfTeam;
 import com.example.sportsteamdatamanagementapplication.model.SportType;
 import com.example.sportsteamdatamanagementapplication.model.Team;
 import com.example.sportsteamdatamanagementapplication.model.TeamMembers;
+import com.example.sportsteamdatamanagementapplication.repository.TeamMembersRepository;
+import com.example.sportsteamdatamanagementapplication.repository.TeamRepository;
 import com.example.sportsteamdatamanagementapplication.services.TeamService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class TeamServiceImpl implements TeamService {
-    private static final Map<Integer, Team> teamMap = new HashMap<>();
-    public static int id = 0;
+    private final TeamRepository teamRepository;
+    private final TeamMembersRepository teamMembersRepository;
 
     @Override
     public long addTeam(Team team) {
-        teamMap.put(id, team);
-        for (TeamMembers teamMembers : team.getTeamMembers()) {
-            if (!TeamMembersServiceImpl.getTeamMembersMap().containsValue(teamMembers)) {
-                TeamMembersServiceImpl.addTeamMembers1(teamMembers);
-            }
-        }
-        return id++;
+        Team savedTeam = teamRepository.save(team);
+        team.getTeamMembers().forEach(teamMembersRepository::save);
+        return savedTeam.getId();
     }
 
     @Override
     public Team editTeam(int id, Team team) {
-        if (teamMap.containsKey(id)) {
-            Team team1 = teamMap.get(id);
-            for (TeamMembers teamMembers : team1.getTeamMembers()) {
-                if (TeamMembersServiceImpl.getTeamMembersMap().containsValue(teamMembers)) {
-                    TeamMembersServiceImpl.deleteTeamMembers1(id);
-                }
-            }
-            teamMap.put(id, team);
-            for (TeamMembers teamMembers : team.getTeamMembers()) {
-                if (!TeamMembersServiceImpl.getTeamMembersMap().containsValue(teamMembers)) {
-                    TeamMembersServiceImpl.addTeamMembers1(teamMembers);
-                }
-            }
-        }
-        return team;
+        team.setId(id);
+        Team updatedTeam = teamRepository.save(team);
+        team.getTeamMembers().forEach(teamMembersRepository::save);
+        return updatedTeam;
     }
 
     @Override
     public boolean deleteTeam(int id) {
-        if (teamMap.containsKey(id)) {
-            Team team1 = teamMap.get(id);
-            for (TeamMembers teamMembers : team1.getTeamMembers()) {
-                if (TeamMembersServiceImpl.getTeamMembersMap().containsValue(teamMembers)) {
-                    TeamMembersServiceImpl.deleteTeamMembers1(id);
-                }
-            }
-            teamMap.remove(id);
+        if (teamRepository.existsById(id)) {
+            teamRepository.deleteById(id);
             return true;
         }
         return false;
     }
 
     @Override
-    public List<Team> getAllTeam(SportType sportType, Integer dataMin, Integer dataMax) {
+    public List<Team> getAllTeam(SportType sportType, Integer dateMin, Integer dateMax) {
         List<Team> teamList = new ArrayList<>();
-        for (Map.Entry<Integer, Team> entry : teamMap.entrySet()) {
-            Team team = entry.getValue();
+        teamRepository.findAll().forEach(team -> {
             if (team.getSportType().equals(sportType)
-                    && (dataMin <= team.getYearsOfFoundation())
-                    && (dataMax >= team.getYearsOfFoundation())) {
+                    && (dateMin <= team.getYearsOfFoundation())
+                    && (dateMax >= team.getYearsOfFoundation())) {
                 teamList.add(team);
             } else {
                 throw new NoTeamMembers("No teams!");
             }
-        }
+        });
         return teamList;
     }
 
     @Override
     public List<TeamMembers> getAllTeamMembersTeam(PositionOfTeam positionOfTeam, Integer id) {
         List<TeamMembers> teamMembersList = new ArrayList<>();
-        Team team1 = teamMap.get(id);
-        for (TeamMembers teamMembers : team1.getTeamMembers()) {
-            if (teamMembers.getPositionOfTeam().equals(positionOfTeam)
-                    && (teamMap.containsKey(id))) {
-                teamMembersList.add(teamMembers);
-            } else {
-                throw new NoTeamMembers("No members!");
+        Optional<Team> teamOptional = teamRepository.findById(id);
+        if (teamOptional.isPresent()) {
+            Team team = teamOptional.get();
+            for (TeamMembers teamMembers : team.getTeamMembers()) {
+                if (teamMembers.getPositionOfTeam().equals(positionOfTeam)) {
+                    teamMembersList.add(teamMembers);
+                } else {
+                    throw new NoTeamMembers("No members!");
+                }
             }
         }
         return teamMembersList;
-    }
-
-    public static Map<Integer, Team> getTeamMap() {
-        return teamMap;
     }
 }
 

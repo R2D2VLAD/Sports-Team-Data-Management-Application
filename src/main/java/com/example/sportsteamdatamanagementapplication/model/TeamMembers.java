@@ -3,12 +3,12 @@ package com.example.sportsteamdatamanagementapplication.model;
 
 import com.example.sportsteamdatamanagementapplication.exceptions.NoDataAvailable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
 
 @Entity
-@Table(name = "Sports_teams_members", schema = "public", catalog = "postgres")
+@Table(name = "sports_teams_members")
 @EqualsAndHashCode
 public class TeamMembers {
     @Id
@@ -30,10 +30,11 @@ public class TeamMembers {
     @Column(name = "patronymic", nullable = false, length = 50)
     private String patronymic;
     @Basic
-    @Column(name = "yearsOfBirth", nullable = false)
+    @Column(name = "years_of_birth", nullable = false)
     private Integer yearsOfBirth;
     @Basic
-    @Column(name = "positionTeam", nullable = false, length = 50)
+    @Column(name = "position_team", nullable = false, length = 50)
+    @Enumerated(EnumType.STRING)
     private PositionOfTeam positionOfTeam;
 
     public TeamMembers() {
